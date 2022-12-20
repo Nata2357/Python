@@ -1,6 +1,4 @@
-a = 6
-c = 5
-d = a*c
-print (d)
+name = input("name")
+print(name)
 
-print ("привет")
+
