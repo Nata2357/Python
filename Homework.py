@@ -1,62 +1,26 @@
-#Задайте список из нескольких чисел.
-# Напишите программу, которая найдёт сумму элементов списка,
-# стоящих на позиции с нечетным индексом.
-my_list = [12, 14, 1, 15, 2, 6]
-sum = 0
-for i,num in enumerate(my_list):
-    if i%2:
-        sum += num
-print (sum)
+from random import randint
+import itertools
+k = randint(2, 8)
 
-#Напишите программу, которая найдёт произведение пар чисел списка.
-#Парой считаем первый и последний элемент, второй и предпоследний и т.д.
-a = [1, 2, 4, 6]
-b = a[0]*a[-1]
-c = a[1]* a[-2]
-print (b,c)
-
-#Напишите программу,
-# которая будет преобразовывать десятичное число в двоичное.
-
-x = int(input())
-y = ''
-
-while x > 0:
-    y = str(x % 2) + y
-    x = x // 2
-
-print(y)
+def get_ratios(k):
+    ratios = [randint(0, 10) for i in range(k + 1)]
+    while ratios[0] == 0:
+        ratios[0] = randint(1, 10)
+    return ratios
 
 
-# Задайте список из вещественных чисел.
-# Напишите программу, которая найдёт разницу между
-# максимальным и минимальным значением дробной части элементов, отличной от 0.
+def get_polynomial(k, ratios):
+    var = ['*x^']*(k-1) + ['*x']
+    polynomial = [[a, b, c] for a, b, c  in itertools.zip_longest(ratios, var, range(k, 1, -1), fillvalue = '') if a !=0]
+    for x in polynomial:
+        x.append(' + ')
+    polynomial = list(itertools.chain(*polynomial))
+    polynomial[-1] = ' = 0'
+    return "".join(map(str, polynomial)).replace(' 1*x',' x')
 
 
-from random import uniform
-n = int(input('Укажите размер списка '))
-my_list = []
-for i in range(n):
-    f = uniform(0, 9)
-    my_list.append(round(f, 2))
-
-
-#Задайте число. Составьте список чисел Фибоначчи,
-# в том числе для отрицательных индексов.
-
-
-z = int(input('Введите число: '))
-def get_fibonacci(z):
-    fib_nums = []
-    a, b = 1, 1
-    for i in range(z-1):
-        fib_nums.append(a)
-        a, b = b, a + b
-    a, b = 0, 1
-    for i in range (z):
-        fib_nums.insert(0, a)
-        a, b = b, a - b
-    return fib_nums
-
-fib_nums = get_fibonacci(z)
-print(get_fibonacci(z))
+ratios = get_ratios(k)
+polynom1 = get_polynomial(k, ratios)
+print(polynom1)
+with open('33_Polynomial.txt', 'w') as data:
+    data.write(polynom1)
